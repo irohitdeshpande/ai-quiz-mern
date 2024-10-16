@@ -31,7 +31,7 @@ function Register() {
       <div className="card w-400 p-3 bg-white">
         <div className="flex flex-col">
           <h1 className="text-2xl">
-            QUIZ - REGISTER<i class="ri-user-add-line"></i>
+            REGISTER<i class="ri-user-add-line"></i>
           </h1>
           <div className="divider"></div>
           <Form layout="vertical" className="mt-2" onFinish={onFinish}>
