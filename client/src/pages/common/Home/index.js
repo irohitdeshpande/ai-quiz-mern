@@ -33,7 +33,7 @@ function Home() {
   return (
     user && (
       <div>
-        <PageTitle title={`Hi ${user.name}`} />
+        <PageTitle title={`Hi ${user.name}, Welcome to Quiz Application`} />
         <div className="divider"></div>
         <Row gutter={[16, 16]}>
           {exams.map((exam) => (
