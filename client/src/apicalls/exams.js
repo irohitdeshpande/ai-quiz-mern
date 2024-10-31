@@ -100,3 +100,12 @@ export const deleteQuestionById = async (payload) => {
     return error.response.data;
   }
 }
+
+export const generateQuestionWithAI = async (category) => {
+  try {
+    const response = await axiosInstance.post('/api/generate/generate-question', { topic: category });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || "Error generating question");
+  }
+};

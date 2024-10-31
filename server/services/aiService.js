@@ -26,14 +26,17 @@ const getAIQuestion = async (topic) => {
       history: [],
     });
 
-    const prompt = `Make a multiple-choice question on ${topic} in JSON format as follows: {"name": "string", "correctOption": "string", "options": {"A": "string", "B": "string", "C": "string", "D": "string"}}`;
+    const prompt = `Make a multiple-choice question on ${topic} in JSON format as follows: {"name": "string", "correctOption": "string", "options": {"A": "string", "B": "string", "C": "string", "D": "string"}}.`;
     
     const result = await chatSession.sendMessage(prompt);
     
-    const responseText = result.response.text().trim();
+    let responseText = result.response.text().trim();
     console.log("Raw response:", responseText); // Debugging output
+	responseText = responseText.replace(/```json|```/g, '').trim();
+    console.log("Trimmed response:", responseText); // Debugging output
 
     const questionData = JSON.parse(responseText);
+    console.log("JSON.parse response:", questionData); // Debugging output
     return questionData;
   } catch (error) {
     console.error("Error:", error.message);
