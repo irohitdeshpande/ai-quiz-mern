@@ -1,7 +1,7 @@
 # Quizify: AI-powered Quiz Application
 
 ## Objective
-Build an interactive quiz app that personalizes quizzes based on user skills and preferences using the Gemini API. Supports students with targeted questions and allows educators to manage quizzes and track performance.
+Build an interactive quiz app that personalizes quizzes based on user preferences using the Gemini API. Supports students with targeted questions and allows educators to manage quizzes and track performance.
 
 ## Tech Stack
 - **Frontend:** React.js, CSS, HTML, Axios
@@ -45,8 +45,8 @@ Build an interactive quiz app that personalizes quizzes based on user skills and
 ## Setup Instructions
 1. **Clone the repository:**
     ```bash
-    git clone https://github.com/yourusername/Quiz-Application.git
-    cd Quiz-Application
+    git clone https://github.com/yourusername/mern-quiz.git
+    cd mern-quiz
     ```
 
 2. **Install dependencies:**
@@ -73,7 +73,8 @@ Build an interactive quiz app that personalizes quizzes based on user skills and
 ## How to Run
 1. **Start the backend server:**
     ```bash
-    npm run server
+    cd server
+    node server.js
     ```
 
 2. **Start the frontend development server:**
@@ -83,6 +84,6 @@ Build an interactive quiz app that personalizes quizzes based on user skills and
     ```
 
 3. **Access the application:**
-    Open `http://localhost:3000` in your browser.
+    Open `http://localhost:3000` in your browser (preferably in incognito mode).
 
 Enjoy your personalized quiz experience!
