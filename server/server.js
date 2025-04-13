@@ -9,6 +9,12 @@ const examsRoute = require("./routes/examsRoute");
 const resportsRoute = require("./routes/reportsRoute");
 const generateRoute = require("./routes/generateRoute");
 
+const cors = require("cors");
+app.use(cors({
+  origin: "https://quizify-ai-flax.vercel.app/login",
+  credentials: true,
+}))
+
 
 app.use("/api/users", usersRoute);
 app.use("/api/exams", examsRoute);
