@@ -1,5 +1,8 @@
 # Quizify: AI-powered Quiz Application
 
+## Current Status
+Deployment Inactive
+
 ## Objective
 Build an interactive quiz app that personalizes quizzes based on user preferences using the Gemini API. Supports students with targeted questions and allows educators to manage quizzes and track performance.
 
