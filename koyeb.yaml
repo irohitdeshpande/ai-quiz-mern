@@ -1,0 +1,18 @@
+# Koyeb Deployment Configuration
+app:
+  name: quizify-backend
+  services:
+    - name: api
+      git:
+        branch: main
+        build_command: npm install
+        run_command: npm start
+      instance_type: nano
+      ports:
+        - port: 8000
+          protocol: http
+      env:
+        - key: NODE_ENV
+          value: production
+        - key: PORT
+          value: 8000

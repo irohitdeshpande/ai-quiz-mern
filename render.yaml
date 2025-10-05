@@ -1,6 +1,9 @@
-# Render Deployment Configuration
-buildCommand = "npm install && npm run build"
-startCommand = "npm start"
-
-[env]
-  NODE_ENV = "production"
+services:
+  - type: web
+    name: quizify-backend
+    runtime: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
