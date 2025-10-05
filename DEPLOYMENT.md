@@ -35,8 +35,8 @@ This guide covers deploying both frontend and backend of your Quizify applicatio
 3. **Set Environment Variables**:
    ```env
    NODE_ENV=production
-   MONGO_URL=mongodb+srv://username:password@cluster.mongodb.net/quizify
-   JWT_SECRET=your_super_secret_jwt_key_here
+   MONGO_URL=your_mongodb_connection_string_here
+   JWT_SECRET=your_jwt_secret_here
    GEMINI_API_KEY=your_gemini_api_key_here
    FRONTEND_URL=https://your-frontend-domain.vercel.app
    PORT=5000

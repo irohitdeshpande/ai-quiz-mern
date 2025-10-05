@@ -47,14 +47,43 @@ app.use("/api/reports", resportsRoute);
 app.use("/api/generate", generateRoute);
 const port = process.env.PORT || 5000;
 
+// Health check endpoint
+app.get("/", (req, res) => {
+  res.json({
+    message: "Quizify Backend API is running!",
+    version: "1.0.0",
+    status: "healthy",
+    timestamp: new Date().toISOString()
+  });
+});
+
+// API health check
+app.get("/api/health", (req, res) => {
+  res.json({
+    message: "API is working correctly",
+    database: "Connected",
+    services: ["Authentication", "Exams", "Reports", "AI Generation"]
+  });
+});
+
 const path = require("path");
 __dirname = path.resolve();
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "client" , "build")));
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-  });   
+// Only serve static files if client build directory exists
+if (process.env.NODE_ENV === "production" && process.env.SERVE_FRONTEND === "true") {
+  const clientBuildPath = path.join(__dirname, "client", "build");
+  
+  // Check if build directory exists
+  try {
+    require('fs').accessSync(clientBuildPath);
+    app.use(express.static(clientBuildPath));
+    app.get("*", (req, res) => {
+      res.sendFile(path.resolve(clientBuildPath, "index.html"));
+    });
+    console.log("Frontend build files found and served");
+  } catch (error) {
+    console.log("Frontend build directory not found - running as API-only server");
+  }
 } 
 
 

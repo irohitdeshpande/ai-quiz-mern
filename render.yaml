@@ -9,3 +9,5 @@ services:
         value: production
       - key: NODE_VERSION
         value: 22.16.0
+      - key: SERVE_FRONTEND
+        value: "false"

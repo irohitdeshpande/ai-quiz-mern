@@ -20,17 +20,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@google/genai": "^1.22.0",
     "@google/generative-ai": "^0.21.0",
     "axios": "^1.7.9",
     "bcryptjs": "^2.4.3",
+    "concurrently": "^9.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.10.0",
     "mongoose": "^8.8.0",
-    "openai": "^4.69.0",
-    "concurrently": "^9.1.0"
+    "openai": "^4.69.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.7"

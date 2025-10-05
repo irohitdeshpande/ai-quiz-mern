@@ -1,60 +1,51 @@
-const {
-  GoogleGenerativeAI,
-} = require("@google/generative-ai");
+const { GoogleGenAI } = require("@google/genai");
 const dotenv = require('dotenv');
 dotenv.config();
 
-const apiKey = process.env.GEMINI_API_KEY;
-const genAI = new GoogleGenerativeAI(apiKey);
-
-const model = genAI.getGenerativeModel({
-  model: "gemini-1.5-flash",
-});
-
-const generationConfig = {
-  temperature: 1,
-  topP: 0.95,
-  topK: 64,
-  maxOutputTokens: 100, // Adjust to limit response size for questions
-  responseMimeType: "text/plain",
-};
+// The client gets the API key from the environment variable `GEMINI_API_KEY`.
+const ai = new GoogleGenAI({});
 
 const getAIQuestion = async (topic) => {
   try {
-    const chatSession = model.startChat({
-      generationConfig,
-      history: [],
-    });
+    // Check if API key is available
+    if (!process.env.GEMINI_API_KEY) {
+      throw new Error("GEMINI_API_KEY environment variable is not set");
+    }
 
     const prompt = `Make a multiple-choice question on ${topic} in JSON format as follows: {"name": "string", "correctOption": "string", "options": {"A": "string", "B": "string", "C": "string", "D": "string"}}.`;
     
-    const result = await chatSession.sendMessage(prompt);
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: prompt,
+    });
     
-    let responseText = result.response.text().trim();
+    let responseText = response.text.trim();
     console.log("Raw response:", responseText); // Debugging output
-	responseText = responseText.replace(/```json|```/g, '').trim();
+    responseText = responseText.replace(/```json|```/g, '').trim();
     console.log("Trimmed response:", responseText); // Debugging output
 
     const questionData = JSON.parse(responseText);
     console.log("JSON.parse response:", questionData); // Debugging output
     return questionData;
   } catch (error) {
-    console.error("Error:", error.message);
-    throw new Error("Error generating question");
+    console.error("Gemini AI Error:", error.message);
+    
+    // Provide more specific error messages
+    if (error.message.includes('API key') || error.message.includes('authentication')) {
+      throw new Error("Invalid or missing Gemini API key");
+    } else if (error.message.includes('not found') || error.message.includes('404')) {
+      throw new Error("Gemini API model not available - please check model name");
+    } else if (error.message.includes('quota') || error.message.includes('429')) {
+      throw new Error("Gemini API quota exceeded - please try again later");
+    } else if (error.message.includes('JSON')) {
+      throw new Error("Error parsing AI response - invalid JSON format");
+    } else {
+      throw new Error(`Error generating question: ${error.message}`);
+    }
   }
 }
 
 module.exports = {
   getAIQuestion,
 };
-
-// Example usage (optional)
-(async () => {
-  try {
-    const question = await getAIQuestion("space exploration");
-    console.log(question);
-  } catch (err) {
-    console.error(err);
-  }
-})();
 
