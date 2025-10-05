@@ -1,4 +1,4 @@
-# 🚀 Step-by-Step Deployment Guide
+<!-- # 🚀 Step-by-Step Deployment Guide
 
 ## Prerequisites ✅
 - [x] Updated AI service to new SDK
@@ -45,12 +45,14 @@ In the Render dashboard, go to **Environment** tab and add:
 
 ```env
 NODE_ENV=production
-MONGO_URL=mongodb+srv://rohit:Spice_001@quiz-app.lp6mp.mongodb.net/?retryWrites=true&w=majority&appName=quiz-app
-JWT_SECRET=1773a834b03b176d1a366a5debd621186ca4aab9e7ff9f2273137c091abbf2a1dae6ac51e9fb7988dfadd77b70fcf382fbd164c19de0bf56648e68c1350557e6
-GEMINI_API_KEY=AIzaSyCJJCHmFAe36hcKHoU_Z4w88-TbYb1B8Jg
+MONGO_URL=your_mongodb_connection_string_here
+JWT_SECRET=your_jwt_secret_key_here
+GEMINI_API_KEY=your_gemini_api_key_here
 FRONTEND_URL=https://your-frontend.vercel.app
 SERVE_FRONTEND=false
 ```
+
+**⚠️ IMPORTANT: Use your actual values from server/.env file when setting these in Render dashboard!**
 
 ### 2.4 Deploy
 1. Click **"Create Web Service"**
@@ -167,4 +169,4 @@ npm start
 
 ---
 
-**Ready to deploy?** Start with Step 1 above! 🚀
+**Ready to deploy?** Start with Step 1 above! 🚀 -->
