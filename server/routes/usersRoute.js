@@ -8,30 +8,85 @@ const authMiddleware = require("../middlewares/authMiddleware");
 
 router.post("/register", async (req, res) => {
   try {
-    // check if user already exists
-    const userExists = await User.findOne({ email: req.body.email });
-    if (userExists) {
-      return res
-        .status(200)
-        .send({ message: "User already exists", success: false });
+    const { name, email, password, role } = req.body;
+
+    // Validate required fields
+    if (!name || !email || !password) {
+      return res.status(400).send({
+        message: "Name, email, and password are required",
+        success: false,
+      });
     }
 
-    // hash password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(req.body.password, salt);
-    req.body.password = hashedPassword;
+    // Validate role
+    const validRoles = ['user', 'admin'];
+    const userRole = role || 'user';
+    if (!validRoles.includes(userRole)) {
+      return res.status(400).send({
+        message: "Invalid role. Must be 'user' or 'admin'",
+        success: false,
+      });
+    }
 
-    // create new user
-    const newUser = new User(req.body);
+    // Check if user already exists
+    const userExists = await User.findOne({ email: email.toLowerCase() });
+    if (userExists) {
+      return res.status(400).send({ 
+        message: "User with this email already exists", 
+        success: false 
+      });
+    }
+
+    // Validate password length
+    if (password.length < 6) {
+      return res.status(400).send({
+        message: "Password must be at least 6 characters long",
+        success: false,
+      });
+    }
+
+    // Hash password
+    const salt = await bcrypt.genSalt(12);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    // Create new user with role
+    const userData = {
+      name: name.trim(),
+      email: email.toLowerCase().trim(),
+      password: hashedPassword,
+      role: userRole,
+      isAdmin: userRole === 'admin'
+    };
+
+    const newUser = new User(userData);
     await newUser.save();
-    res.send({
-      message: "User created successfully",
+
+    res.status(201).send({
+      message: `${userRole === 'admin' ? 'Admin' : 'User'} account created successfully`,
       success: true,
     });
   } catch (error) {
+    console.error('Registration error:', error);
+    
+    // Handle mongoose validation errors
+    if (error.name === 'ValidationError') {
+      const validationErrors = Object.values(error.errors).map(err => err.message);
+      return res.status(400).send({
+        message: validationErrors.join(', '),
+        success: false,
+      });
+    }
+
+    // Handle duplicate email error
+    if (error.code === 11000) {
+      return res.status(400).send({
+        message: "Email address is already registered",
+        success: false,
+      });
+    }
+
     res.status(500).send({
-      message: error.message,
-      data: error,
+      message: "Server error during registration. Please try again.",
       success: false,
     });
   }
@@ -41,38 +96,63 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   try {
-    // check if user exists
-    const user = await User.findOne({ email: req.body.email });
+    const { email, password } = req.body;
+
+    // Validate required fields
+    if (!email || !password) {
+      return res.status(400).send({
+        message: "Email and password are required",
+        success: false,
+      });
+    }
+
+    // Check if user exists
+    const user = await User.findOne({ email: email.toLowerCase().trim() });
     if (!user) {
-      return res
-        .status(200)
-        .send({ message: "User does not exist", success: false });
+      return res.status(401).send({ 
+        message: "Invalid email or password", 
+        success: false 
+      });
     }
 
-    // check password
-    const validPassword = await bcrypt.compare(
-      req.body.password,
-      user.password
-    );
+    // Check password
+    const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
-      return res
-        .status(200)
-        .send({ message: "Invalid password", success: false });
+      return res.status(401).send({ 
+        message: "Invalid email or password", 
+        success: false 
+      });
     }
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1d",
-    });
+    // Generate JWT token
+    const token = jwt.sign(
+      { 
+        userId: user._id,
+        email: user.email,
+        role: user.role,
+        isAdmin: user.isAdmin 
+      }, 
+      process.env.JWT_SECRET, 
+      { expiresIn: "7d" }
+    );
 
+    // Send success response with user info
     res.send({
-      message: "User logged in successfully",
+      message: `Welcome back, ${user.name}!`,
       success: true,
       data: token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        isAdmin: user.isAdmin
+      }
     });
   } catch (error) {
+    console.error('Login error:', error);
     res.status(500).send({
-      message: error.message,
-      data: error,
+      message: "Server error during login. Please try again.",
       success: false,
     });
   }

@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { HideLoading, ShowLoading } from "../../../redux/loaderSlice";
 import { getAllReports } from "../../../apicalls/reports";
 import { useEffect } from "react";
-import moment from "moment";
+import dayjs from "dayjs";
 
 function AdminReports() {
   const [reportsData, setReportsData] = React.useState([]);
@@ -29,7 +29,7 @@ function AdminReports() {
       title: "Date",
       dataIndex: "date",
       render: (text, record) => (
-        <>{moment(record.createdAt).format("DD-MM-YYYY hh:mm:ss")}</>
+        <>{dayjs(record.createdAt).format("DD-MM-YYYY hh:mm:ss")}</>
       ),
     },
     {

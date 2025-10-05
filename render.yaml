@@ -1,0 +1,6 @@
+# Render Deployment Configuration
+buildCommand = "npm install && npm run build"
+startCommand = "npm start"
+
+[env]
+  NODE_ENV = "production"
