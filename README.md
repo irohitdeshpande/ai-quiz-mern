@@ -1,9 +1,5 @@
 # 🎯 Quizify: AI-Powered Quiz Application
 
-[![Deploy Status](https://img.shields.io/badge/Deploy-Live-brightgreen)](https://quizify-ai-git-main-rohit-deshpandes-projects.vercel.app)
-[![Backend](https://img.shields.io/badge/Backend-Render-blue)](https://quizify-backend.onrender.com)
-[![Frontend](https://img.shields.io/badge/Frontend-Vercel-black)](https://quizify-ai-git-main-rohit-deshpandes-projects.vercel.app)
-
 ## 🚀 Live Application
 - **Frontend**: [https://quizify-ai-git-main-rohit-deshpandes-projects.vercel.app](https://quizify-ai-git-main-rohit-deshpandes-projects.vercel.app)
 - **Backend API**: [https://quizify-backend.onrender.com](https://quizify-backend.onrender.com)
@@ -154,12 +150,6 @@ SERVE_FRONTEND=false
 ## 📜 License
 
 This project is licensed under the MIT License.
-
-## 👨‍💻 Author
-
-**Rohit Deshpande**
-- GitHub: [@irohitdeshpande](https://github.com/irohitdeshpande)
-- Live App: [Quizify](https://quizify-ai-git-main-rohit-deshpandes-projects.vercel.app)
 
 ---
 
